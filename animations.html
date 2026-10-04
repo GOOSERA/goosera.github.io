@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>My animations</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Gochi+Hand&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --blue-light: #3d5a78;
+      --blue-mid: #36506c;
+      --blue-dark: #253a52;
+      --line: #0e1620;
+      --ink: #0e1620;
+      --tile: rgba(255, 255, 255, 0.03);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body { min-height: 100%; }
+
+    body {
+      background: linear-gradient(to right,
+        var(--blue-mid) 0%,
+        var(--blue-light) 45%,
+        var(--blue-dark) 100%);
+      background-attachment: fixed;
+      font-family: "Gochi Hand", "Comic Sans MS", "Segoe Print", cursive;
+      color: var(--ink);
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* The two vertical lines down the left side */
+    .rail {
+      position: relative;
+      width: 56px;
+      flex-shrink: 0;
+      border-left: 1.5px solid var(--line);
+      border-right: 1.5px solid var(--line);
+      margin: 2vh 0 2vh 14px;
+    }
+    .rail a {
+      position: absolute;
+      top: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: var(--ink);
+      text-decoration: none;
+      font-size: 1.1rem;
+      writing-mode: vertical-rl;
+      transform: translateX(-50%) rotate(180deg);
+    }
+    .rail a:hover { text-decoration: underline; }
+    .rail a:focus-visible { outline: 2px dashed var(--ink); outline-offset: 3px; }
+
+    /* The video grid */
+    main {
+      flex: 1;
+      padding: 4vh 5vw 6vh;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6vh 3vw;
+      max-width: 1200px;
+    }
+
+    .tile {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  border: 1.5px solid var(--line);
+  background: var(--tile);
+  overflow: hidden;
+}
+
+.tile {
+  transition: transform 0.2s ease;
+}
+.tile:hover,
+.tile:focus-within {
+  transform: scale(1.05);
+  z-index: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tile { transition: none; }
+}
+
+    .tile .label {
+      position: absolute;
+      top: 0.4em;
+      left: 0.4em;
+      font-size: clamp(1rem, 1.8vw, 1.6rem);
+      pointer-events: none;
+    }
+
+    .tile iframe,
+    .tile video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+      object-fit: cover;
+    }
+
+    @media (max-width: 700px) {
+      .grid { grid-template-columns: repeat(2, 1fr); gap: 5vh 5vw; }
+      .rail { width: 40px; }
+    }
+    @media (max-width: 420px) {
+      .grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="rail">
+    <a href="startpage.html">Back</a>
+  </div>
+
+  <main>
+    <!--
+      To add a video, do ONE of these on a tile:
+        • YouTube: put the video's ID in data-youtube
+            (the part after "watch?v=" in the link), e.g. data-youtube="dQw4w9WgXcQ"
+        • Your own file: put the path in data-video, e.g. data-video="videos/walk-cycle.mp4"
+      Leave both empty and the tile just shows its label.
+    -->
+    <div class="grid">
+      <div class="tile" data-youtube="Whg3OZbw09A" data-video=""><span class="label">Video</span></div>
+      <div class="tile" data-youtube="" data-video=""></div>
+      <div class="tile" data-youtube="" data-video=""></div>
+      <div class="tile" data-youtube="" data-video=""><span class="label">Video</span></div>
+      <div class="tile" data-youtube="" data-video=""></div>
+      <div class="tile" data-youtube="" data-video=""></div>
+    </div>
+  </main>
+
+  <script>
+    // Fill each tile with its video, if one is set.
+    document.querySelectorAll('.tile').forEach(tile => {
+      const yt = tile.dataset.youtube.trim();
+      const file = tile.dataset.video.trim();
+
+      if (yt) {
+        const iframe = document.createElement('iframe');
+        iframe.src = `https://www.youtube.com/embed/${yt}`;
+        iframe.title = 'Animation';
+        iframe.allow = 'accelerometer; encrypted-media; gyroscope; picture-in-picture; fullscreen';
+        iframe.loading = 'lazy';
+        tile.innerHTML = '';
+        tile.appendChild(iframe);
+      } else if (file) {
+        const video = document.createElement('video');
+        video.src = file;
+        video.controls = true;
+        video.preload = 'metadata';
+        tile.innerHTML = '';
+        tile.appendChild(video);
+      }
+    });
+  </script>
+</body>
+</html>
