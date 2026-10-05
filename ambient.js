@@ -5,9 +5,9 @@
     'ambient/brave-sir-robin.ogg',
     'ambient/doors-tuck.ogg',
   ];
-  const MIN_GAP = 20;   // seconds between sounds (shortest)
-  const MAX_GAP = 60;   // seconds between sounds (longest)
-  const VOLUME  = 0.5;  // 0.0 to 1.0
+  const MIN_GAP = 100;   // seconds between sounds (shortest)
+  const MAX_GAP = 200;   // seconds between sounds (longest)
+  const VOLUME  = 0.2;  // 0.0 to 1.0
 
   let muted = localStorage.getItem('ambientMuted') === '1';
   let last = -1;
