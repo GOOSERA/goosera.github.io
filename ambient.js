@@ -1,4 +1,4 @@
-// ambient.js: random sounds with real silence between them.
+// ambient.js: random sounds with real silence between them. 
 (() => {
   const SOUNDS = [
     'ambient/atmos2.ogg',
