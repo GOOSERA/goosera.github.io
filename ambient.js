@@ -30,13 +30,14 @@
     timer = setTimeout(play, delay);
   }
 
-  function play() {
-    if (!muted) {
-      audio.src = pick();
-      audio.play().catch(() => {});
-    }
-    schedule();
+    function play() {
+    if (muted) { schedule(); return; }
+    audio.src = pick();
+    audio.play().catch(schedule);  // if playback fails, just try again later
   }
+
+  // Start the random wait only after a sound has finished
+  audio.addEventListener('ended', schedule);
 
   // Browsers block sound until the visitor interacts with the page,
   // so the timer starts on the first click, tap, or key press.
